@@ -21,7 +21,8 @@
 		function () {
 		    $('#split').on('click', function () {
 		        $(".teasers").html("");
-		        var summary = jSSummarize.summarize($('#title').val(),$('#input').val());
+		        var summarizer = new JsSummarize();
+		        var summary = summarizer.summarize($('#title').val(),$('#input').val());
 		        var orderedList = _.chain(summary).sortBy("score").reverse().take(5).value();
 		        orderedList.forEach(function(sentence)
 		        {
