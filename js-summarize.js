@@ -124,6 +124,7 @@ jSSummarize.prototype = {
 
     dbs: function (words, keywords) {
         if(words.length == 0) return 0;
+        
         var summ = 0;
         first = null;
         second = null;
