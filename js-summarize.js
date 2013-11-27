@@ -89,8 +89,6 @@ var jSSummarize = {
     },
 
     splitWords: function (text) {
-        //var cleanString = text.replace(/[|&;$%@".<>()+,\n]/g, "");
-        //return cleanString.split(" ");
         return this.tokenizer.getTokens(text.toLowerCase());
     },
 
@@ -114,9 +112,6 @@ var jSSummarize = {
     },
 
     splitSentences: function (text) {
-        //TODO: Use NLP Sentence tolkenizer. This will probably fail on
-        //initials. 
-        //return text.match(/[^\.!\?]+[\.!\?]+/g);
         return this.tokenizer.getSentences(text);
     },
 
