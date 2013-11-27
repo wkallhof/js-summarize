@@ -56,7 +56,15 @@ JsSummarize.prototype.summarize = function (title, text) {
     var titleWords = this.splitWords(title)
     var scoredSentences = this.score(sentences, titleWords, keywords);
 
-    return scoredSentences;
+    //Sort by score, select just the sentences, and return 5 (or whatever is set in options)
+    var orderedList = _.chain(scoredSentences)
+                        .sortBy("score")
+                        .reverse()
+                        .pluck("sentence")
+                        .take(this._returnCount)
+                        .value();
+
+    return orderedList;
 },
 
 /**
@@ -243,7 +251,7 @@ JsSummarize.prototype.sentencePosition = function (index, numberOfSentences) {
 
     var normalized =  index*1.0 / numberOfSentences;
 
-    for(var i = 0; i < this._positionValueArray; i++)
+    for(var i = 0; i < this._positionValueArray.length; i++)
     {
         var position = this._positionValueArray[i];
         if(normalized > position.low && normalized <= position.high) return position.score;

@@ -83,12 +83,14 @@
     function () {
         $('#split').on('click', function () {
             $(".teasers").html("");
-            var summarizer = new JsSummarize();
+            var summarizer = new JsSummarize(
+              {
+                returnCount: 3
+              });
             var summary = summarizer.summarize($('#title').val(),$('#input').val());
-            var orderedList = _.chain(summary).sortBy("score").reverse().take(5).value();
-            orderedList.forEach(function(sentence)
+            summary.forEach(function(sentence)
             {
-                $(".teasers").append("<li>"+sentence.sentence+"</li>");
+                $(".teasers").append("<li>"+sentence+"</li>");
             });
             $(".title").text($("#title").val());
         });
