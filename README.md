@@ -4,7 +4,7 @@ JS Summarize is a Natural Language Processing utility used to summarize large bo
 JS Summarize borrows heavily from the summarizing algorithm used in [PyTeaser](https://github.com/xiaoxu193/PyTeaser)
 
 ### Demo
-Click [here](example.html) for a demo
+Click [here](http://wkallhof.github.io/js-summarize/example.html) for a demo
 
 ### How To Use
 Include the js-summarize file in your page and reference all of the necessary library items.
