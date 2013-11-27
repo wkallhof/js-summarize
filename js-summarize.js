@@ -29,7 +29,7 @@ jSSummarize.prototype = {
         {low:0.7, high:0.8, score:0.04},
         {low:0.8, high:0.9, score:0.04},
         {low:0.9, high:1.0, score:0.15}
-    ]
+    ],
     /**
      * Main function. Will take in the correct text and return an array of sentences
      * in order of importance.
