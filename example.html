@@ -79,17 +79,17 @@
 
 		$(window).ready(
 
-		function () {
-		    $('#split').on('click', function () {
-		        $(".teasers").html("");
-		        var summary = jSSummarize.summarize($('#title').val(),$('#input').val());
-		        var orderedList = _.chain(summary).sortBy("score").reverse().take(5).value();
-		        orderedList.forEach(function(sentence)
-		        {
-		            $(".teasers").append("<li>"+sentence.sentence+"</li>");
-		        });
-		        $(".title").text($("#title").val());
-		    });
+  		function () {
+  		    $('#split').on('click', function () {
+  		        $(".teasers").html("");
+  		        var summary = jSSummarize.summarize($('#title').val(),$('#input').val());
+  		        var orderedList = _.chain(summary).sortBy("score").reverse().take(5).value();
+  		        orderedList.forEach(function(sentence)
+  		        {
+  		            $(".teasers").append("<li>"+sentence.sentence+"</li>");
+  		        });
+  		        $(".title").text($("#title").val());
+  		    });
 
 		});
 	</script>
