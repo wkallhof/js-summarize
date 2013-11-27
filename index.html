@@ -20,7 +20,7 @@
     <header>
       <div class="inner">
         <h1>JS Summarize</h1>
-        <h2>NLP Summarizer built with Javascript. Borrows summarizing technique used in PyTeaser to summarize articles down into a small set of sentences.</h2>
+        <h2>NLP Summarizer built with Javascript.</h2>
         <a href="https://github.com/wkallhof/js-summarize" class="button"><small>View project on</small>GitHub</a>
       </div>
     </header>
@@ -29,36 +29,35 @@
       <div class="inner clearfix">
         <section id="main-content">
           <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
+<a name="js-summarize" class="anchor" href="#js-summarize"><span class="octicon octicon-link"></span></a>JS Summarize</h3>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+<p>JS Summarize is a Natural Language Processing utility used to summarize large bodies of text down into a list of sentences that summarize the text.</p>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
-
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+<p>JS Summarize borrows heavily from the summarizing algorithm used in <a href="https://github.com/xiaoxu193/PyTeaser">PyTeaser</a></p>
 
 <h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
+<a name="how-to-use" class="anchor" href="#how-to-use"><span class="octicon octicon-link"></span></a>How To Use</h3>
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+<p>Include the js-summarize file in your page and reference all of the necessary library items.
+Then:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">summary</span> <span class="o">=</span> <span class="nx">jSSummarize</span><span class="p">.</span><span class="nx">summarize</span><span class="p">(</span><span class="s2">"[title text here]"</span><span class="p">,</span><span class="s2">"[full text here]"</span><span class="p">);</span>
+<span class="cm">/*</span>
+<span class="cm">    summary array:</span>
+
+<span class="cm">    [</span>
+<span class="cm">        {sentence:"summary sentence 1", score:0.42},</span>
+<span class="cm">        {sentence:"summary sentence 2", score:0.32},</span>
+<span class="cm">        {sentence:"summary sentence 3", score:0.31},</span>
+<span class="cm">                             ...</span>
+<span class="cm">    ]</span>
+<span class="cm">*/</span>
+</pre></div>
 
 <h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
+<a name="demo" class="anchor" href="#demo"><span class="octicon octicon-link"></span></a>Demo</h3>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
-
-<h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
-
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
-
-<h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
-
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
+<p>Click <a href="example.html">here</a> for a demo</p>
         </section>
 
         <aside id="sidebar">
