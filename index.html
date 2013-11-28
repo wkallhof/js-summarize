@@ -46,14 +46,15 @@
 <p>Include the js-summarize file in your page and reference all of the necessary library items.
 Then:</p>
 
-<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">summary</span> <span class="o">=</span> <span class="nx">jSSummarize</span><span class="p">.</span><span class="nx">summarize</span><span class="p">(</span><span class="s2">"[title text here]"</span><span class="p">,</span><span class="s2">"[full text here]"</span><span class="p">);</span>
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">summarizer</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">JsSummarize</span><span class="p">();</span>
+<span class="kd">var</span> <span class="nx">summary</span> <span class="o">=</span> <span class="nx">summarizer</span><span class="p">.</span><span class="nx">summarize</span><span class="p">(</span><span class="s2">"Text title here"</span><span class="p">,</span><span class="s2">"Full text here"</span><span class="p">);</span>
 <span class="cm">/*</span>
-<span class="cm">    summary array:</span>
+<span class="cm">    output summary array:</span>
 
 <span class="cm">    [</span>
-<span class="cm">        {sentence:"summary sentence 1", score:0.42},</span>
-<span class="cm">        {sentence:"summary sentence 2", score:0.32},</span>
-<span class="cm">        {sentence:"summary sentence 3", score:0.31},</span>
+<span class="cm">        "Best summarizing sentence here.",</span>
+<span class="cm">        "Second best summarizing sentence here.",</span>
+<span class="cm">        "Third best summarizing article here.",</span>
 <span class="cm">                             ...</span>
 <span class="cm">    ]</span>
 <span class="cm">*/</span>
