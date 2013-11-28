@@ -117,6 +117,8 @@ JsSummarize.prototype.sbs = function (words, keywords) {
     if(words.length == 0) return 0;
 
     var score = 0;
+    var contribution = 10;
+
     for(var i = 0; i < words.length; i++)
     {
         var word = words[i];
@@ -127,7 +129,7 @@ JsSummarize.prototype.sbs = function (words, keywords) {
         }
     }
 
-    return (1.0 / words.length * score)/10.0;
+    return (1.0 / words.length) * (score/contribution);
 },
 
 /**
