@@ -107,9 +107,16 @@ JsSummarize.prototype.score = function (sentences, titleWords, keywords) {
     return scoredSentences;
 },
 
+/**
+ * Summation-based selection scoring
+ * @param  {array} words    sentence to score
+ * @param  {array} keywords list of keywords to score against
+ * @return {number}          score
+ */
 JsSummarize.prototype.sbs = function (words, keywords) {
-    var score = 0.0;
     if(words.length == 0) return 0;
+
+    var score = 0;
     for(var i = 0; i < words.length; i++)
     {
         var word = words[i];
@@ -123,12 +130,19 @@ JsSummarize.prototype.sbs = function (words, keywords) {
     return (1.0 / words.length * score)/10.0;
 },
 
+/**
+ * Density-based selection scoring
+ * @param  {array} words    sentence to score
+ * @param  {array} keywords list of keywords to score against
+ * @return {number}          score
+ */
 JsSummarize.prototype.dbs = function (words, keywords) {
     if(words.length == 0) return 0;
     
-    var summ = 0;
-    first = null;
-    second = null;
+    var total = 0;
+    var first = null;
+    var second = null;
+    var keywordsFound = 0;
 
     for(var i = 0; i < words.length; i++)
     {
@@ -136,6 +150,7 @@ JsSummarize.prototype.dbs = function (words, keywords) {
         var match = _.find(keywords,{"word":word});
         if(match)
         {
+            keywordsFound++;
             var score = match.score;
             if(!first)
             {
@@ -145,17 +160,13 @@ JsSummarize.prototype.dbs = function (words, keywords) {
                 second = first;
                 first = {index:i, score:score};
                 var dif = first.index - second.index;
-                summ +=(first.score*second.score) / (Math.pow(dif,2));
+                total += (first.score*second.score) / (Math.pow(dif,2));
             }
         }
     }
 
-    var keywordWords = _.pluck(keywords, "word");
-    var intersection = _.intersection(keywordWords, words);
-    var k = intersection.length;
-    if(k == 0) return 0;
-    return (1/(k*(k+1.0))*summ);
-
+    if(keywordsFound == 0) return 0;
+    return (1/(keywordsFound*(keywordsFound+1)))*total;
 },
 
 /**
