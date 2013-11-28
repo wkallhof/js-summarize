@@ -29,19 +29,19 @@
         <section id="main-content">
           
   <h3>
-  	<a name="demo" class="anchor" href="#demo">
-  		<span class="octicon octicon-link"></span>
-  	</a>Demo
+    <a name="demo" class="anchor" href="#demo">
+      <span class="octicon octicon-link"></span>
+    </a>Demo
   </h3>
 
-	<label for="title">Title:</label><br>
-	<input type="text" id="title" placeholder="Paste title here" />
-	<br>
-	<label for="input">Full Text:</label><br>
-	<textarea id="input" name="input" cols="40" rows="5" placeholder="Paste full text here"></textarea>
-	<input type="button" id="split" value="Summarize" />
-	<h2 class="title"></h2>
-	<ul class="teasers"></ul>
+  <label for="title">Title:</label><br>
+  <input type="text" id="title" placeholder="Paste title here" />
+  <br>
+  <label for="input">Full Text:</label><br>
+  <textarea id="input" name="input" cols="40" rows="5" placeholder="Paste full text here"></textarea>
+  <input type="button" id="split" value="Summarize" />
+  <h2 class="title"></h2>
+  <ul class="teasers"></ul>
 </section>
 
         <aside id="sidebar">
@@ -60,11 +60,13 @@
         </aside>
       </div>
     </div>
+
 	<script src="lib/lodash/lodash.js" type="text/javascript"></script>
 	<script src="lib/sugar/sugar.js" type="text/javascript"></script>
 	<script src="lib/jquery/jquery.js" type="text/javascript"></script>
 	<script src="lib/tokenizer/tokenizer.js" type="text/javascript"></script>
 	<script src="js-summarize.js" type="text/javascript"></script>
+
             <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
             document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
@@ -75,25 +77,27 @@
             pageTracker._trackPageview();
             } catch(err) {}
           </script>
-	<script type="text/javascript">
 
-		
+  <script type="text/javascript">
+
     $(window).ready(
 
     function () {
         $('#split').on('click', function () {
             $(".teasers").html("");
-            var summarizer = new JsSummarize();
+            var summarizer = new JsSummarize(
+              {
+                returnCount: 3
+              });
             var summary = summarizer.summarize($('#title').val(),$('#input').val());
-            var orderedList = _.chain(summary).sortBy("score").reverse().take(5).value();
-            orderedList.forEach(function(sentence)
+            summary.forEach(function(sentence)
             {
-                $(".teasers").append("<li>"+sentence.sentence+"</li>");
+                $(".teasers").append("<li>"+sentence+"</li>");
             });
             $(".title").text($("#title").val());
         });
 
     });
-	</script>
+  </script>
   </body>
 </html>
