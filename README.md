@@ -10,14 +10,15 @@ Click [here](http://wkallhof.github.io/js-summarize/example.html) for a demo
 Include the js-summarize file in your page and reference all of the necessary library items.
 Then:
 ``` javascript
-var summary = jSSummarize.summarize("[title text here]","[full text here]");
+var summarizer = new JsSummarize();
+var summary = summarizer.summarize("Text title here","Full text here");
 /*
-	summary array:
+	output summary array:
 
 	[
-		{sentence:"summary sentence 1", score:0.42},
-		{sentence:"summary sentence 2", score:0.32},
-		{sentence:"summary sentence 3", score:0.31},
+		"Best summarizing sentence here.",
+		"Second best summarizing sentence here.",
+		"Third best summarizing article here.",
 		                     ...
 	]
 */
