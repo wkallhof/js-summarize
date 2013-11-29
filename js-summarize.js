@@ -177,7 +177,7 @@ JsSummarize.prototype.dbs = function (words, keywords) {
  * @return {array}      An array of words
  */
 JsSummarize.prototype.splitWords = function (text) {
-    return this._tokenizer.getTokens(text.toLowerCase());
+    return this._tokenizer.tokenizeAggressive(text.toLowerCase());
 },
 
 /**
