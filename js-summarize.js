@@ -2,7 +2,7 @@ function JsSummarize(options)
 {
     'use strict';
 
-    /** @type {Number} This is the ideal sentence length and will give weight to 
+    /** @type {Number} This is the ideal sentence length and will give weight to
     sentences that are close to this length */
     this._idealSentenceLength = 20.0;
     /** @type {Array} This is an array of tokens to exlude when generating sentence value */
@@ -41,7 +41,7 @@ function JsSummarize(options)
 /**
  * Main function. Will take in the correct text and return an array of sentences
  * in order of importance.
- * 
+ *
  * @param  {string} title The title of the text
  * @param  {string} text The long text
  * @param  {object} options The options object used to override parameters
@@ -57,21 +57,25 @@ JsSummarize.prototype.summarize = function (title, text) {
     var scoredSentences = this.score(sentences, titleWords, keywords);
 
     //Sort by score, select just the sentences, and return 5 (or whatever is set in options)
-    var orderedList = _.chain(scoredSentences)
-                        .sortBy("score")
-                        .reverse()
-                        .pluck("sentence")
-                        .take(this._returnCount)
-                        .value();
+    var self = this;
+    var orderedList = scoredSentences.sort(function(a, b) {
+        if (a.score < b.score) { return 1; }
+        if (a.score > b.score) { return -1; }
+        return 0;
+    }).map(function(item) {
+        return item.sentence;
+    }).filter(function(sentence, idx) {
+        return idx < self._returnCount;
+    });
 
     return orderedList;
 },
 
 /**
  * Handles the bulk of the operations. This will score sentences based on
- * shared keywords in the title, amount of high frequencey keywords, ideal length,
+ * shared keywords in the title, amount of high frequency keywords, ideal length,
  * ideal position, sbs sentence algorithm,and the dbs sentence algorithm;
- * 
+ *
  * @param  {array} sentences  The array of sentences that make up the large text
  * @param  {array} titleWords The array of word tokens that make up the text title
  * @param  {array} keywords   The array of high frequency keywords in the text
@@ -119,15 +123,16 @@ JsSummarize.prototype.sbs = function (words, keywords) {
     var score = 0;
     var contribution = 10;
 
-    for(var i = 0; i < words.length; i++)
-    {
-        var word = words[i];
-        var match = _.find(keywords,{"word":word});
-        if(match)
+    words.map(function (word) {
+        var matches = keywords.filter(function (keyword) {
+            return (keyword.word == word);
+        });
+
+        if (matches.length)
         {
-            score += match.score;
+            score += matches[0].score;
         }
-    }
+    });
 
     return (1.0 / words.length) * (score/contribution);
 },
@@ -140,32 +145,32 @@ JsSummarize.prototype.sbs = function (words, keywords) {
  */
 JsSummarize.prototype.dbs = function (words, keywords) {
     if(words.length == 0) return 0;
-    
+
     var total = 0;
     var first = null;
     var second = null;
     var keywordsFound = 0;
 
-    for(var i = 0; i < words.length; i++)
-    {
-        var word = words[i];
-        var match = _.find(keywords,{"word":word});
-        if(match)
-        {
-            keywordsFound++;
-            var score = match.score;
-            if(!first)
-            {
+    words.map(function (word, i) {
+        var matches = keywords.filter(function (keyword) {
+            return (keyword.word == word);
+        });
+
+        if (matches.length) {
+            ++keywordsFound;
+            var score = matches[0].score;
+            if (!first) {
                 first = {index:i, score:score};
             }
-            else{
+            else {
                 second = first;
                 first = {index:i, score:score};
                 var dif = first.index - second.index;
                 total += (first.score*second.score) / (Math.pow(dif,2));
             }
+
         }
-    }
+    });
 
     if(keywordsFound == 0) return 0;
     return (1/(keywordsFound*(keywordsFound+1)))*total;
@@ -184,7 +189,7 @@ JsSummarize.prototype.splitWords = function (text) {
  * Builds up a list of high frequency words (keywords) used throughout
  * the text. Uses the exclusion list to remove words that do not help the
  * sentence score.
- * 
+ *
  * @param  {string} text Full text to parse
  * @return {array}      An array of high frequency keywords
  */
@@ -192,27 +197,47 @@ JsSummarize.prototype.keywords = function (text) {
 
     var splitText = this.splitWords(text);
 
-    var words = _.chain(splitText)
-                .difference(this._excludeList)
-                .groupBy(function (word) {return word;})
-                .map(function(group){
-                    var frequency = group.length;
-                    var score = (frequency * 1.0 / splitText.length) * 1.5 + 1;
-                    return {word:group[0], score:score};
-                }).sortBy('score')
-                .reverse()
-                .take(10)
-                .value();
+    // NOTE: this is functionally identical code with different output.
+    //
+    // In V8 5.6.326.50 w/ lodash 2.3.0, all of these produce different results:
+    // * lodash.sortBy().reverse()
+    // * Array.sort(descendingCallback)
+    // * Array.sort(ascendingCallback).reverse()
+    var self = this;
+    var words = splitText.filter(function (word) {
+        return !self._excludeList.includes(word);
+    }).reduce(function(groups, word) {
+        for (var idx in groups) {
+            if (groups[idx].word === word) {
+                ++groups[idx].frequency;
+                return groups;
+            }
+        }
+
+        groups.push({word: word, frequency: 1, score: null});
+        return groups;
+    }, []).map(function(group) {
+        // (frequency * 1.0 / splitText.length) * 1.5 + 1;
+        group.score = (group.frequency * 1.0 / splitText.length) * 1.5 + 1;
+        return group;
+    }).sort(function(a, b) {
+        if (a.score < b.score) { return 1; }
+        if (a.score > b.score) { return -1; }
+        return 0;
+    }).
+    filter(function(group, idx) {
+        return idx < 10;
+    });
 
     return words;
 },
 
 /**
  * Uses tokenizer to split text into sentences
- *     
+ *
  * @param  {string} text Full text to split into sentences
  * @return {array}      The array of sentences
- */ 
+ */
 JsSummarize.prototype.splitSentences = function (text) {
     return this._tokenizer.getSentences(text);
 },
@@ -229,7 +254,7 @@ JsSummarize.prototype.lengthScore = function (sentence) {
 
 /**
  * Scores a sentence based on shared words with the title
- * 
+ *
  * @param  {string} title    Text Title
  * @param  {array} sentence Sentence word array to score
  * @return {number}          Score based on title
@@ -238,16 +263,17 @@ JsSummarize.prototype.titleScore = function (title, sentence) {
 
     if(!title || !sentence) return 0;
     //Remove any words shared with the exclusion list
-    var titleWords = _.difference(title, this._excludeList);
+    var self = this;
+    var titleWords = title.filter(function (word) {
+        return !self._excludeList.includes(word);
+    });
+
     var count = 0;
-    for(var i = 0; i < sentence.length; i++)
-    {
-        var word = sentence[i];
-        if(!_.contains(this._excludeList, word) && _.contains(titleWords, word ))
-        {
-            count++;
+    sentence.map(function(word) {
+        if (!self._excludeList.includes(word) && titleWords.includes(word)) {
+            ++count;
         }
-    }
+    })
 
     return count === 0? 0 : count/title.length;
 },
@@ -255,7 +281,7 @@ JsSummarize.prototype.titleScore = function (title, sentence) {
 /**
  * Scores a sentence based on its location in the text. Different sentence
  * positions indicate different probabilities of being an important sentence.
- * 
+ *
  * @param  {number} index    Sentence index in array of text sentences
  * @param  {number} numberOfSentences The total number of sentences in the text
  * @return {number}      Scored based on sentence position
@@ -271,5 +297,5 @@ JsSummarize.prototype.sentencePosition = function (index, numberOfSentences) {
     }
 
     return 0;
-} 
+}
 
