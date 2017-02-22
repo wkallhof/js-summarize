@@ -26,6 +26,5 @@ var summary = summarizer.summarize("Text title here","Full text here");
 
 ## To Do
 * Create a better tokenizer to parse out correct sentences. Right now there are a lot of problems parsing initials properly (ex. U.S.A. )
-* Remove dependencies on other libraries (jquery, lodash, and sugar)
 * Clean up and comment code
 * Research and re-evaluate score calculating algorithms
